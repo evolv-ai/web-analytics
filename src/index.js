@@ -12,6 +12,20 @@ function updateUrl() {
 	});
 }
 
+function emitMouseEvent(type, e) {
+	const event = {
+		'x': e.clientX,
+		'y': e.clientY,
+		'buttons': e.buttons,
+		'altKey': e.altKey,
+		'ctrlKey': e.ctrlKey,
+		'shiftKey': e.shiftKey,
+		'metaKey': e.metaKey
+	};
+
+
+}
+
 orientationMediaMatch && orientationMediaMatch.addEventListener('change', function(e) {
 	const o = w.screen.orientation;
 	clients.forEach(function(c) {
@@ -27,7 +41,9 @@ orientationMediaMatch && orientationMediaMatch.addEventListener('change', functi
 });
 
 w.addEventListener('hashchange', updateUrl);
+
 w.addEventListener('popstate', updateUrl);
+
 w.addEventListener('scroll', function(e) {
 	scrollX = w.pageXOffset;
 	scrollY = w.pageYOffset;
@@ -51,6 +67,7 @@ w.addEventListener('scroll', function(e) {
 		scrollWaiting = true;
 	}
 }, {passive: true});
+
 w.addEventListener('resize', function() {
 	const s = window.screen;
 	clients.forEach(function(c) {
@@ -68,6 +85,9 @@ w.addEventListener('resize', function() {
 		});
 	});
 });
+
+document.addEventListener('click', emitMouseEvent.bind(undefined, 'click'));
+document.addEventListener('dblclick', emitMouseEvent.bind(undefined, 'dblclick'));
 
 const originalPushState = history.pushState;
 history.pushState = function() {
