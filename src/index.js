@@ -23,7 +23,9 @@ function emitMouseEvent(type, e) {
 		'metaKey': e.metaKey
 	};
 
-
+	clients.forEach(function(c) {
+		c.emit('click', event);
+	});
 }
 
 orientationMediaMatch && orientationMediaMatch.addEventListener('change', function(e) {
@@ -111,15 +113,15 @@ function initializeClient(client) {
 				scrollX: w.pageXOffset,
 				scrollY: w.pageYOffset
 			},
-			screen: {
-				height: s && s.height,
-				width: s && s.width,
-				type: o && o.type,
-				angle: o && o.angle,
-				pixelDepth: s && s.pixelDepth
-			},
-			connection: navigator.connection,
-		}
+		},
+		screen: {
+			height: s && s.height,
+			width: s && s.width,
+			type: o && o.type,
+			angle: o && o.angle,
+			pixelDepth: s && s.pixelDepth
+		},
+		connection: navigator.connection
 	};
 
 	client.context.update(context);
