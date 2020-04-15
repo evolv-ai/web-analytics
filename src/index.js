@@ -1,4 +1,4 @@
-const clients = [];
+let clients = [];
 const w = window;
 let scrollX = 0;
 let scrollY = 0;
@@ -12,7 +12,7 @@ function updateUrl() {
 	});
 }
 
-function emitMouseEvent(type, e) {
+function emitMouseEvent(e) {
 	const event = {
 		'x': e.clientX,
 		'y': e.clientY,
@@ -24,7 +24,7 @@ function emitMouseEvent(type, e) {
 	};
 
 	clients.forEach(function(c) {
-		c.emit('click', event);
+		c.emit(e.type, event);
 	});
 }
 
@@ -52,6 +52,7 @@ w.addEventListener('scroll', function(e) {
 
 	// Throttle expensive scroll operation
 	if (!scrollWaiting) {
+		console.log('!scrollWaiting')
 		window.requestAnimationFrame(function() {
 			clients.forEach(function(c) {
 				c.context.update({
@@ -71,29 +72,24 @@ w.addEventListener('scroll', function(e) {
 }, {passive: true});
 
 w.addEventListener('resize', function() {
-	const s = window.screen;
 	clients.forEach(function(c) {
 		c.context.update({
 			web: {
 				client: {
 					innerHeight: w.innerHeight,
 					innerWidth: w.innerWidth
-				},
-				screen: {
-					height: s && s.height,
-					width: s && s.width,
 				}
 			}
 		});
 	});
 });
 
-document.addEventListener('click', emitMouseEvent.bind(undefined, 'click'));
-document.addEventListener('dblclick', emitMouseEvent.bind(undefined, 'dblclick'));
+document.addEventListener('click', emitMouseEvent);
+document.addEventListener('dblclick', emitMouseEvent);
 
 const originalPushState = history.pushState;
 history.pushState = function() {
-	const result = originalPushState.apply(this, arguments);
+	const result = originalPushState.apply(history, arguments);
 	updateUrl();
 	return result;
 };
@@ -130,4 +126,14 @@ function initializeClient(client) {
 export function registerClient(client) {
 	clients.push(client);
 	initializeClient(client);
+}
+
+export function unregisterClient(client) {
+	clients = clients.filter(function(c) {
+		return client !== c;
+	});
+}
+
+export function unregisterAllClient() {
+	clients = [];
 }

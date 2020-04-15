@@ -1,7 +1,7 @@
 module.exports = function(config) {
 	'use strict';
 	config.set({
-		frameworks: ['mocha', 'chai', 'chai-spies', 'esm'],
+		frameworks: ['mocha', 'chai', 'esm'],
 		plugins: [
 			// load plugin
 			require.resolve('@open-wc/karma-esm'),
@@ -9,6 +9,7 @@ module.exports = function(config) {
 			// fallback: resolve any karma- plugins
 			'karma-*',
 		],
+		reporters: ['progress'],
 		files: [
 			{ pattern: 'src/**/*.test.js', type: 'module' }
 		],
