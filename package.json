@@ -10,7 +10,7 @@
   "author": "",
   "license": "Apache 2.0",
   "devDependencies": {
-    "@open-wc/karma-esm": "^2.13.23",
+    "@open-wc/karma-esm": "^2.16.6",
     "chai": "^4.2.0",
     "karma": "^5.0.8",
     "karma-chai": "^0.1.0",
