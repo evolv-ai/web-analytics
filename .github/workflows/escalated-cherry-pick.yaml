@@ -3,8 +3,8 @@ name: Escalated Cherry Pick
 # This allows PRs from forked repos to run actions that require values from secrets when a team member merges
 
 on:
-  pull_request:
-    types: [ closed ]
+  repository_dispatch:
+    types: [ escalated-cherry-pick-command ]
 
 jobs:
   cherry-pick:
